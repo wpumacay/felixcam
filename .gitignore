@@ -1,0 +1,9 @@
+
+*.out
+*.ppm
+*.cmake
+CMakeFiles/
+CMakeCache.txt
+*.a
+testlib
+Makefile
