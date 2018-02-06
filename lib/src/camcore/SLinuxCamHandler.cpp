@@ -101,11 +101,6 @@ namespace cam { namespace handler {
             closeDevice();
         }
 
-        if ( m_rgbFrame.data != NULL )
-        {
-            free( m_rgbFrame.data );
-        }
-
         m_fHandle = -1;
         m_fWidth = -1;
         m_fHeight = -1;
@@ -522,9 +517,8 @@ namespace cam { namespace handler {
 
             if ( _deviceReadFrame() ) 
             {
-                _res.copyFrom( m_rgbFrame );
-
-                return _res;
+                // just return the frame, the copy constructors will do the job
+                return m_rgbFrame;
             }
             /* EAGAIN - continue select loop. */
         }
