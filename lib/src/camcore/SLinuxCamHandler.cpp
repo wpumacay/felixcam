@@ -454,6 +454,28 @@ namespace cam { namespace handler {
         return true;
     }
 
+    bool SLinuxCamHandler::deviceSetStreamingProperty( cam::u32 propertyId, cam::i32 propertyValue )
+    {
+        assert( m_fHandle != -1 );
+
+        struct v4l2_streamparm _camStream;
+
+        _camStream.type = V4L2_BUF_TYPE_VIDEO_CAPTURE;
+        _camStream.parm.capture.timeperframe.numerator = 1;
+        _camStream.parm.capture.timeperframe.denominator = 30;
+
+        if ( v4l2_ioctl( m_fHandle, VIDIOC_S_PARM, &_camStream ) == -1 )
+        {
+            cout << "Warning: error while setting property: " 
+                 << cam::PROPERTIES_MAP[ propertyId ] << " with value: " << propertyValue 
+                 << " giving error: " << strerror( errno ) << endl;
+
+            return false;
+        }
+
+        return true;
+    }
+
     void SLinuxCamHandler::dumpCurrentProperties()
     {
         assert( m_fHandle != -1 );
@@ -466,16 +488,39 @@ namespace cam { namespace handler {
 
     void SLinuxCamHandler::_dumpSingleProperty( cam::u32 propertyId, string propName )
     {
-        struct v4l2_control _camControl;
-        _camControl.id = propertyId;
-
-        if ( xioctl( m_fHandle, VIDIOC_G_CTRL, &_camControl ) == -1 )
+        if ( propertyId > CAMPROP_STREAMING_PROPS_START )
         {
-            cout << "Warning: error while reading property: " << propName << endl;
-            return;
-        }
+            // TODO: Just framerate supported - check to include other streamprops
 
-        cout << "prop( " << propName << " ): " << _camControl.value << endl;
+            struct v4l2_streamparm _camStream;
+
+            _camStream.type = V4L2_BUF_TYPE_VIDEO_CAPTURE;
+
+            if ( xioctl( m_fHandle, VIDIOC_G_PARM, &_camStream ) == -1 )
+            {
+                cout << "Warning: error while reading property: " << propName << endl;
+                return;
+            }
+            cam::u32 _numerator     = _camStream.parm.capture.timeperframe.numerator;
+            cam::u32 _denominator   = _camStream.parm.capture.timeperframe.denominator;
+
+            cout << "stprop( " << propName << " ): " << _numerator << " - " << _denominator << endl;
+        }
+        else
+        {
+            // querying control
+
+            struct v4l2_control _camControl;
+            _camControl.id = propertyId;
+
+            if ( xioctl( m_fHandle, VIDIOC_G_CTRL, &_camControl ) == -1 )
+            {
+                cout << "Warning: error while reading property: " << propName << endl;
+                return;
+            }
+
+            cout << "prop( " << propName << " ): " << _camControl.value << endl;
+        }
     }
 
     SImageRGB SLinuxCamHandler::takeFrame( int timeout )

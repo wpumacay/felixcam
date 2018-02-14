@@ -53,14 +53,13 @@ namespace cam { namespace handler {
         void stopCapture();
 
         bool deviceSetProperty( cam::u32 propertyId, cam::i32 propertyValue );
-
+        bool deviceSetStreamingProperty( cam::u32 propertyId, cam::i32 propertyValue );
+        
         void dumpCurrentProperties();
 
         SImageRGB takeFrame( int timeout = 1 );
 
     };
-
-
 
 
 }}

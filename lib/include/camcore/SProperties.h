@@ -17,8 +17,10 @@
 #define CAMPROP_WHITE_BALANCE_TEMPERATURE   V4L2_CID_WHITE_BALANCE_TEMPERATURE
 #define CAMPROP_AUTO_BALANCE_WHITE          V4L2_CID_AUTO_WHITE_BALANCE
 #define CAMPROP_AUTO_FOCUS                  V4L2_CID_FOCUS_AUTO
-// #define CAMPROP_AUTO_HUE                    V4L2_CID_HUE_AUTO
 #define CAMPROP_AUTO_EXPOSURE               V4L2_CID_EXPOSURE_AUTO
+
+#define CAMPROP_STREAMING_PROPS_START       0xf000
+#define CAMPROP_STREAMING_FRAMERATE         CAMPROP_STREAMING_PROPS_START + 1
 
 namespace cam
 {
@@ -26,15 +28,15 @@ namespace cam
     typedef std::unordered_map< int, std::string > SPropertiesMap;
 
     static SPropertiesMap PROPERTIES_MAP( { { CAMPROP_AUTO_FOCUS, "Focus Auto" }, 
-                                           { CAMPROP_BRIGHTNESS, "Brightness" },
-                                           { CAMPROP_CONTRAST, "Contrast" },
-                                           { CAMPROP_SATURATION, "Saturation" },
-                                           { CAMPROP_FOCUS_ABSOLUTE, "Focus Absolute" },
-                                           { CAMPROP_WHITE_BALANCE_TEMPERATURE, "White balance temperature" },
-                                           { CAMPROP_AUTO_BALANCE_WHITE, "White balance auto" },
-                                           { CAMPROP_BACKLIGHT_COMPENSATION, "Backlight compensation" },
-                                           { CAMPROP_EXPOSURE_ABSOLUTE, "Exposure Absolute" },
-                                           // { CAMPROP_AUTO_HUE, "Hue Auto" },
-                                           { CAMPROP_AUTO_EXPOSURE, "Exposure Auto" } } );
+                                            { CAMPROP_BRIGHTNESS, "Brightness" },
+                                            { CAMPROP_CONTRAST, "Contrast" },
+                                            { CAMPROP_SATURATION, "Saturation" },
+                                            { CAMPROP_FOCUS_ABSOLUTE, "Focus Absolute" },
+                                            { CAMPROP_WHITE_BALANCE_TEMPERATURE, "White balance temperature" },
+                                            { CAMPROP_AUTO_BALANCE_WHITE, "White balance auto" },
+                                            { CAMPROP_BACKLIGHT_COMPENSATION, "Backlight compensation" },
+                                            { CAMPROP_EXPOSURE_ABSOLUTE, "Exposure Absolute" },
+                                            { CAMPROP_AUTO_EXPOSURE, "Exposure Auto" },
+                                            { CAMPROP_STREAMING_FRAMERATE, "Framerate" } } );
 
 }
