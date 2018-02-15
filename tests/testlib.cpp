@@ -32,7 +32,9 @@ int main()
 
     _camHandler->startCapture();
 
-    auto _frame = _camHandler->takeFrame();
+    // auto _frame = _camHandler->takeFrame();
+    cam::SImageRGB _frame;
+    _camHandler->takeFrame( _frame );
 
     ofstream _image;
     _image.open( "frame.ppm" );

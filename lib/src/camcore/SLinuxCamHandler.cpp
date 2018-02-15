@@ -462,7 +462,7 @@ namespace cam { namespace handler {
 
         _camStream.type = V4L2_BUF_TYPE_VIDEO_CAPTURE;
         _camStream.parm.capture.timeperframe.numerator = 1;
-        _camStream.parm.capture.timeperframe.denominator = 30;
+        _camStream.parm.capture.timeperframe.denominator = propertyValue;
 
         if ( v4l2_ioctl( m_fHandle, VIDIOC_S_PARM, &_camStream ) == -1 )
         {
@@ -523,9 +523,9 @@ namespace cam { namespace handler {
         }
     }
 
-    SImageRGB SLinuxCamHandler::takeFrame( int timeout )
+    void SLinuxCamHandler::takeFrame( SImageRGB& dst, int timeout )
     {
-        SImageRGB _res;
+        // SImageRGB _res;
 
         for ( ;; )  
         {
@@ -559,16 +559,19 @@ namespace cam { namespace handler {
                 closeDevice();
                 exit( -1 );
             }
-
+            // cout << "????" << endl;
             if ( _deviceReadFrame() ) 
             {
                 // just return the frame, the copy constructors will do the job
-                return m_rgbFrame;
+                // return m_rgbFrame;
+                // cout << "???? jojojojo" << endl;
+                dst = m_rgbFrame;
+                return;
             }
             /* EAGAIN - continue select loop. */
         }
 
-        return _res;
+        // return _res;
     }
 
     bool SLinuxCamHandler::_deviceReadFrame()

@@ -57,7 +57,7 @@ namespace cam { namespace handler {
         
         void dumpCurrentProperties();
 
-        SImageRGB takeFrame( int timeout = 1 );
+        void takeFrame( SImageRGB& dst, int timeout = 1 );
 
     };
 

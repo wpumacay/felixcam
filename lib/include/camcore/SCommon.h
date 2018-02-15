@@ -47,6 +47,8 @@ namespace cam
             this->height = height;
             this->size = width * height * 3;
             this->data = new cam::u8[ this->size ];
+
+            std::cout << "constructor" << std::endl;
         }
 
         SImageRGB( const SImageRGB& other )
@@ -59,8 +61,9 @@ namespace cam
             memcpy( this->data, other.data, sizeof( cam::u8 ) * this->size );
         }
 
-        void operator= ( const SImageRGB& other )
+        SImageRGB& operator= ( const SImageRGB& other )
         {
+            // std::cout << "wtf - operator=" << std::endl;
             release();
 
             this->width = other.width;
@@ -69,6 +72,8 @@ namespace cam
             this->data = new cam::u8[ this->size ];
 
             memcpy( this->data, other.data, sizeof( cam::u8 ) * this->size );
+
+            return *this;
         }
 
         ~SImageRGB()
@@ -82,11 +87,22 @@ namespace cam
 
         void release()
         {
+            // std::cout << "trying to release" << std::endl;
             if ( this->data != NULL )
             {
                 delete[] this->data;
                 this->data = NULL;
+                // std::cout << "release" << std::endl;
             }
+        }
+
+        cam::u8 get( int row, int col, int channel ) const
+        {
+            // if ( row > this->height - 1 || col > this->width - 1 )
+            // {
+            //     return 0;
+            // }
+            return this->data[ 3 * ( col + row * this->width ) + channel ];
         }
     };
 }
